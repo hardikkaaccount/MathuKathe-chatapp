@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { ARENA_MUTATION, SEND_MESSAGE_MUTATION } from '@/queries/chat';
-import { Loader2, Zap, Swords, User, Trophy, Play } from 'lucide-react';
+import { Loader2, Zap, Swords, Play } from 'lucide-react';
 import { cn } from '@/utils/cn';
 
 interface ArenaProps {
     groupId: string;
     members: any[];
-    currentUser: any;
+    currentUser?: any;
 }
 
 type GameState = 'setup' | 'playing' | 'result';
 
-export function Arena({ groupId, members, currentUser }: ArenaProps) {
+export function Arena({ groupId, members }: ArenaProps) {
     const [gameState, setGameState] = useState<GameState>('setup');
     const [selectedGame, setSelectedGame] = useState('truth_or_dare');
     const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
@@ -22,7 +22,7 @@ export function Arena({ groupId, members, currentUser }: ArenaProps) {
     const [spinRotation, setSpinRotation] = useState(0);
     const [result, setResult] = useState<{ challenger: string, player: string } | null>(null);
 
-    const [runArena, { loading }] = useMutation(ARENA_MUTATION);
+    const [runArena] = useMutation(ARENA_MUTATION);
     const [sendMessage] = useMutation(SEND_MESSAGE_MUTATION);
 
     useEffect(() => {
@@ -167,7 +167,7 @@ export function Arena({ groupId, members, currentUser }: ArenaProps) {
 
                                 const isChallenger = result?.challenger === memberId;
                                 const isPlayer = result?.player === memberId;
-                                const isHighlighted = isChallenger || isPlayer;
+
 
                                 return (
                                     <div
